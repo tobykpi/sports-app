@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MeetCheck | From Chaos to Clarity</title>
+  <title>MeetCheck App</title>
   <meta
     name="description"
-    content="MeetCheck is the central nervous system for live youth sports—real-time event alerts, admin controls, and instant updates for parents, athletes, and coaches."
+    content="MeetCheck app interface for live youth sports alerts, followed events, admin controls, and real-time meet updates."
   />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,23 +18,21 @@
 
   <style>
     :root{
-      --bg:#07080d;
-      --bg-soft:#0d1018;
-      --panel:#101523;
-      --panel-2:#141b2d;
-      --panel-3:#19233b;
-      --text:#f4f7ff;
-      --muted:#aab4d1;
+      --bg:#07090f;
+      --bg2:#0d1220;
+      --panel:#12192a;
+      --panel-2:#18233a;
+      --soft:#95a3c7;
+      --text:#f5f8ff;
       --line:rgba(255,255,255,0.08);
-      --crimson:#d61f35;
-      --crimson-bright:#ff3a55;
-      --blue:#6aa6ff;
-      --teal:#66f2d6;
-      --gold:#ffd166;
-      --shadow:0 25px 70px rgba(0,0,0,0.45);
-      --radius:24px;
+      --red:#d81f3b;
+      --red-bright:#ff4664;
+      --blue:#71a8ff;
+      --green:#35d78d;
+      --gold:#ffd36c;
+      --shadow:0 24px 60px rgba(0,0,0,0.38);
+      --radius:26px;
       --radius-sm:18px;
-      --max:1280px;
     }
 
     *{
@@ -49,82 +47,80 @@
 
     body{
       font-family:'Inter',sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(214,31,53,0.18), transparent 32%),
-        radial-gradient(circle at 85% 15%, rgba(106,166,255,0.16), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(102,242,214,0.10), transparent 32%),
-        linear-gradient(180deg, #06070b 0%, #090b12 45%, #06070b 100%);
       color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,70,100,.18), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(113,168,255,.16), transparent 26%),
+        linear-gradient(180deg, #05070d 0%, #0a0f18 100%);
+      min-height:100vh;
       overflow-x:hidden;
-      line-height:1.6;
     }
 
     a{
-      color:inherit;
       text-decoration:none;
+      color:inherit;
     }
 
-    img{
-      max-width:100%;
-      display:block;
+    button{
+      font:inherit;
+      border:none;
+      cursor:pointer;
     }
 
-    .container{
-      width:min(var(--max), calc(100% - 40px));
-      margin:0 auto;
+    .app-shell{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:290px 1fr;
+      position:relative;
     }
 
-    .grid-glow{
+    .app-shell::before{
+      content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size:48px 48px;
-      mask-image:radial-gradient(circle at center, black 35%, transparent 85%);
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+      background-size:42px 42px;
+      mask-image:radial-gradient(circle at center, black 28%, transparent 80%);
       opacity:.45;
-      z-index:0;
     }
 
-    header{
+    .sidebar{
       position:sticky;
       top:0;
-      z-index:50;
-      backdrop-filter: blur(18px);
-      background:rgba(6,8,13,0.72);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .nav{
+      height:100vh;
+      padding:22px;
+      border-right:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(8,10,17,.92), rgba(10,14,24,.82));
+      backdrop-filter:blur(18px);
+      z-index:5;
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:18px 0;
-      gap:20px;
+      flex-direction:column;
+      gap:18px;
     }
 
     .brand{
       display:flex;
       align-items:center;
       gap:14px;
-      font-weight:800;
-      letter-spacing:.02em;
+      padding:10px 8px 18px;
     }
 
     .brand-mark{
-      width:44px;
-      height:44px;
-      border-radius:14px;
+      width:52px;
+      height:52px;
+      border-radius:16px;
       display:grid;
       place-items:center;
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:700;
       background:
-        linear-gradient(135deg, rgba(255,58,85,0.28), rgba(106,166,255,0.18)),
-        rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.1);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04) inset,
-        0 12px 30px rgba(214,31,53,0.18);
+        linear-gradient(135deg, rgba(255,70,100,.28), rgba(113,168,255,.22)),
+        rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 16px 36px rgba(216,31,59,.18);
       position:relative;
       overflow:hidden;
     }
@@ -132,131 +128,274 @@
     .brand-mark::before{
       content:"";
       position:absolute;
-      inset:-20%;
-      background:conic-gradient(from 120deg, transparent 0deg, rgba(255,58,85,.55) 40deg, transparent 90deg, rgba(106,166,255,.35) 160deg, transparent 260deg);
+      inset:-35%;
+      background:conic-gradient(from 150deg, transparent, rgba(255,70,100,.55), transparent, rgba(113,168,255,.45), transparent);
       filter:blur(8px);
-      opacity:.8;
     }
 
     .brand-mark span{
       position:relative;
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1rem;
-      font-weight:700;
       z-index:1;
     }
 
-    .brand-text{
-      display:flex;
-      flex-direction:column;
-      line-height:1.1;
-    }
-
-    .brand-text strong{
-      font-size:1rem;
+    .brand-copy strong{
+      display:block;
+      font-size:1.05rem;
       font-weight:800;
     }
 
-    .brand-text small{
-      color:var(--muted);
-      font-size:.73rem;
-      letter-spacing:.08em;
+    .brand-copy small{
+      display:block;
+      margin-top:3px;
+      color:var(--soft);
+      font-size:.78rem;
       text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .sidebar-group{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:24px;
+      padding:14px;
+    }
+
+    .sidebar-label{
+      font-size:.73rem;
+      color:var(--soft);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:800;
+      margin-bottom:10px;
+      padding-left:8px;
     }
 
     .nav-links{
-      display:flex;
-      align-items:center;
-      gap:24px;
-      color:#d8def0;
-      font-size:.95rem;
+      display:grid;
+      gap:8px;
     }
 
-    .nav-links a{
+    .nav-btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 14px;
+      border-radius:18px;
+      background:transparent;
+      color:#deE5fa;
       transition:.25s ease;
     }
 
-    .nav-links a:hover{
+    .nav-btn:hover,
+    .nav-btn.active{
+      background:linear-gradient(135deg, rgba(255,70,100,.18), rgba(113,168,255,.14));
       color:#fff;
+      border-color:rgba(255,255,255,.08);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
     }
 
-    .nav-actions{
+    .nav-btn .left{
       display:flex;
-      gap:12px;
       align-items:center;
+      gap:12px;
+      font-weight:700;
     }
 
-    .btn{
+    .nav-btn .icon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.05);
+      font-size:1rem;
+    }
+
+    .nav-btn .badge{
+      min-width:28px;
+      height:28px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      font-size:.75rem;
+      font-weight:800;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      padding:0 8px;
+    }
+
+    .quick-card{
+      padding:16px;
+      border-radius:22px;
+      background:
+        radial-gradient(circle at top right, rgba(113,168,255,.18), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+    }
+
+    .quick-card h3{
+      font-size:1rem;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .quick-card p{
+      color:var(--soft);
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    .pill-btn{
+      margin-top:14px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
-      padding:13px 18px;
+      padding:12px 16px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.1);
-      font-weight:700;
-      transition:.28s ease;
-      cursor:pointer;
-      white-space:nowrap;
-    }
-
-    .btn-outline{
-      background:rgba(255,255,255,0.03);
+      background:linear-gradient(135deg, var(--red-bright), var(--red));
       color:#fff;
+      font-weight:800;
+      box-shadow:0 16px 34px rgba(216,31,59,.28);
     }
 
-    .btn-outline:hover{
-      background:rgba(255,255,255,0.08);
-      transform:translateY(-2px);
+    .main{
+      min-width:0;
+      padding:26px;
     }
 
-    .btn-primary{
-      background:linear-gradient(135deg, var(--crimson-bright), var(--crimson));
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:22px;
+    }
+
+    .search{
+      flex:1;
+      position:relative;
+    }
+
+    .search input{
+      width:100%;
+      border:none;
+      outline:none;
       color:#fff;
-      box-shadow:0 18px 40px rgba(214,31,53,0.28);
-      border-color:rgba(255,255,255,0.12);
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:16px 18px 16px 48px;
+      font-size:.97rem;
     }
 
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 24px 50px rgba(214,31,53,0.35);
+    .search span{
+      position:absolute;
+      top:50%;
+      left:16px;
+      transform:translateY(-50%);
+      color:var(--soft);
+      font-size:1rem;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .ghost-btn,
+    .primary-btn{
+      padding:13px 18px;
+      border-radius:16px;
+      font-weight:800;
+      transition:.25s ease;
+    }
+
+    .ghost-btn{
+      background:rgba(255,255,255,.04);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .primary-btn{
+      background:linear-gradient(135deg, var(--red-bright), var(--red));
+      color:#fff;
+      box-shadow:0 16px 36px rgba(216,31,59,.28);
+    }
+
+    .content-section{
+      display:none;
+      animation:fadeIn .35s ease;
+    }
+
+    .content-section.active{
+      display:block;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(8px);}
+      to{opacity:1; transform:translateY(0);}
     }
 
     .hero{
-      position:relative;
-      z-index:1;
-      padding:78px 0 44px;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:20px;
+      margin-bottom:20px;
     }
 
-    .hero-wrap{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:34px;
-      align-items:center;
+    .panel{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.025)),
+        rgba(12,17,29,.92);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-card{
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      right:-90px;
+      top:-90px;
+      background:radial-gradient(circle, rgba(255,70,100,.22), transparent 70%);
     }
 
     .eyebrow{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      font-size:.82rem;
-      font-weight:700;
-      color:#ffd9de;
       padding:10px 14px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:rgba(214,31,53,0.12);
-      box-shadow:0 0 0 1px rgba(255,255,255,0.02) inset;
-      margin-bottom:20px;
+      background:rgba(255,70,100,.12);
+      color:#ffd5dc;
+      border:1px solid rgba(255,255,255,.07);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      margin-bottom:18px;
     }
 
-    .eyebrow .dot{
-      width:9px;
-      height:9px;
-      background:var(--crimson-bright);
+    .live-dot{
+      width:8px;
+      height:8px;
       border-radius:50%;
-      box-shadow:0 0 18px var(--crimson-bright);
-      animation:pulse 1.7s infinite;
+      background:var(--red-bright);
+      box-shadow:0 0 14px var(--red-bright);
+      animation:pulse 1.5s infinite;
     }
 
     @keyframes pulse{
@@ -265,1337 +404,1195 @@
       100%{transform:scale(1); opacity:1;}
     }
 
-    .hero h1{
-      font-size:clamp(2.7rem, 6vw, 5.6rem);
+    .hero-card h1{
+      font-size:clamp(2.1rem,4vw,4rem);
       line-height:.95;
       letter-spacing:-.045em;
       font-weight:900;
-      max-width:760px;
+      max-width:720px;
     }
 
-    .hero h1 .gradient{
+    .hero-card h1 span{
       display:block;
-      background:linear-gradient(90deg, #fff 0%, #ffd3d9 32%, #86b7ff 76%, #d5fff7 100%);
+      background:linear-gradient(90deg, #fff 0%, #ffd9df 25%, #92bdff 72%, #d9fff4 100%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       background-clip:text;
       color:transparent;
     }
 
-    .hero p{
-      font-size:1.08rem;
-      color:var(--muted);
+    .hero-card p{
+      margin-top:18px;
       max-width:720px;
-      margin-top:22px;
+      color:var(--soft);
+      font-size:1rem;
     }
 
-    .hero-actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:30px;
-    }
-
-    .stats{
+    .hero-stats{
       display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:16px;
-      margin-top:38px;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:26px;
     }
 
-    .stat{
-      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-      box-shadow:var(--shadow);
+    .mini-stat{
+      padding:16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
     }
 
-    .stat strong{
+    .mini-stat strong{
       display:block;
-      font-size:1.35rem;
+      font-size:1.2rem;
       font-weight:800;
       margin-bottom:4px;
     }
 
-    .stat span{
-      color:var(--muted);
-      font-size:.92rem;
+    .mini-stat span{
+      color:var(--soft);
+      font-size:.88rem;
     }
 
-    .hero-card{
-      position:relative;
-      padding:22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025)),
-        rgba(10,12,20,0.9);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .hero-card::before{
-      content:"";
-      position:absolute;
-      inset:-20% auto auto -10%;
-      width:220px;
-      height:220px;
-      background:radial-gradient(circle, rgba(255,58,85,.22), transparent 70%);
-      pointer-events:none;
-    }
-
-    .dash-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border-radius:999px;
-      padding:9px 12px;
-      font-size:.76rem;
-      font-weight:700;
-      color:#f6d9dd;
-      background:rgba(214,31,53,.12);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .chip .live{
-      width:8px;
-      height:8px;
-      background:var(--crimson-bright);
-      border-radius:50%;
-      box-shadow:0 0 14px var(--crimson-bright);
-    }
-
-    .phone-shell{
-      background:linear-gradient(180deg, #0d1322, #101828);
-      border-radius:28px;
-      padding:16px;
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow:0 18px 40px rgba(0,0,0,0.35);
-    }
-
-    .screen{
-      border-radius:22px;
-      background:
-        radial-gradient(circle at top right, rgba(106,166,255,0.16), transparent 28%),
-        linear-gradient(180deg, #121b31 0%, #0c1323 100%);
-      border:1px solid rgba(255,255,255,0.06);
+    .phone-card{
       padding:18px;
     }
 
-    .screen-top{
+    .phone-shell{
+      border-radius:30px;
+      padding:14px;
+      background:linear-gradient(180deg, #0c1221, #10182a);
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .phone-screen{
+      border-radius:24px;
+      padding:16px;
+      background:
+        radial-gradient(circle at top right, rgba(113,168,255,.16), transparent 30%),
+        linear-gradient(180deg, #111b30 0%, #0d1424 100%);
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .screen-head{
       display:flex;
       justify-content:space-between;
       align-items:center;
       margin-bottom:14px;
     }
 
-    .screen-title{
-      font-weight:800;
+    .screen-head strong{
       font-size:1rem;
+      font-weight:800;
     }
 
-    .screen-sub{
-      color:var(--muted);
-      font-size:.83rem;
+    .screen-head small{
+      color:var(--soft);
+      font-size:.8rem;
     }
 
     .event-card{
-      background:rgba(255,255,255,0.045);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
       padding:14px;
-      margin-bottom:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.045);
+      border:1px solid rgba(255,255,255,.07);
+      margin-bottom:10px;
     }
 
-    .event-row{
+    .event-top{
       display:flex;
       justify-content:space-between;
+      gap:10px;
       align-items:flex-start;
-      gap:14px;
     }
 
-    .event-left h4{
-      font-size:.98rem;
+    .event-title{
+      font-size:.96rem;
       font-weight:800;
-      margin-bottom:4px;
     }
 
-    .event-left p{
-      font-size:.84rem;
-      color:var(--muted);
-      margin:0;
+    .event-sub{
+      color:var(--soft);
+      font-size:.82rem;
+      margin-top:3px;
     }
 
-    .tag{
-      font-size:.72rem;
-      font-weight:800;
-      padding:8px 10px;
-      border-radius:999px;
-      letter-spacing:.03em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-
-    .tag-following{
-      color:#fff;
-      background:linear-gradient(135deg, rgba(255,58,85,0.94), rgba(214,31,53,0.94));
-      box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset, 0 12px 24px rgba(214,31,53,.22);
+    .star{
+      min-width:44px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      font-size:1rem;
+      font-weight:900;
+      background:linear-gradient(135deg, rgba(255,70,100,.95), rgba(216,31,59,.95));
+      box-shadow:0 12px 22px rgba(216,31,59,.26);
     }
 
     .notif{
-      margin-top:14px;
-      background:linear-gradient(135deg, rgba(255,58,85,.20), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:18px;
-      padding:14px;
       display:flex;
       gap:12px;
       align-items:flex-start;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.07);
+      background:linear-gradient(135deg, rgba(255,70,100,.18), rgba(255,255,255,.04));
+      margin-top:12px;
     }
 
     .notif-icon{
-      width:38px;
-      height:38px;
+      width:40px;
+      height:40px;
       border-radius:50%;
       display:grid;
       place-items:center;
-      font-weight:900;
-      background:rgba(255,58,85,.18);
-      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,.08);
       flex-shrink:0;
     }
 
     .notif strong{
       display:block;
-      font-size:.94rem;
-      margin-bottom:2px;
+      font-size:.92rem;
+      margin-bottom:3px;
     }
 
     .notif span{
       display:block;
-      color:var(--muted);
       font-size:.82rem;
-      line-height:1.4;
-    }
-
-    section{
-      position:relative;
-      z-index:1;
-      padding:34px 0;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      align-items:flex-end;
-      margin-bottom:24px;
-    }
-
-    .section-head h2{
-      font-size:clamp(2rem, 4vw, 3.4rem);
-      line-height:1;
-      letter-spacing:-.04em;
-      font-weight:900;
-      max-width:760px;
-    }
-
-    .section-head p{
-      color:var(--muted);
-      max-width:680px;
-      font-size:1.02rem;
-    }
-
-    .panel{
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
-        rgba(11,15,24,0.85);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      padding:28px;
-    }
-
-    .sports-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-    }
-
-    .sport-card{
-      position:relative;
-      padding:22px;
-      border-radius:24px;
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.08);
-      min-height:190px;
-    }
-
-    .sport-card::after{
-      content:"";
-      position:absolute;
-      right:-40px;
-      bottom:-40px;
-      width:130px;
-      height:130px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(255,255,255,.13), transparent 70%);
-    }
-
-    .sport-icon{
-      width:52px;
-      height:52px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
-      font-size:1.5rem;
-      margin-bottom:18px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .sport-card h3{
-      font-size:1.18rem;
-      margin-bottom:8px;
-      font-weight:800;
-    }
-
-    .sport-card p{
-      color:var(--muted);
-      font-size:.95rem;
-    }
-
-    .triggers-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-    }
-
-    .trigger{
-      padding:22px;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,0.08);
-      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-      position:relative;
-      overflow:hidden;
-    }
-
-    .trigger::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(135deg, rgba(255,58,85,0.09), transparent 45%, rgba(106,166,255,0.08));
-      pointer-events:none;
-    }
-
-    .trigger strong{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-size:.82rem;
-      color:#ffd7dd;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      margin-bottom:12px;
-    }
-
-    .trigger h3{
-      font-size:1.12rem;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .trigger p{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
-    .split{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
-    .feature-list{
-      display:grid;
-      gap:14px;
-      margin-top:20px;
-    }
-
-    .feature-item{
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-      padding:16px 16px;
-      border-radius:18px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.06);
-    }
-
-    .feature-bullet{
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      flex-shrink:0;
-      font-weight:900;
-      color:#fff;
-      background:linear-gradient(135deg, rgba(255,58,85,0.95), rgba(106,166,255,0.75));
-    }
-
-    .feature-item h4{
-      font-size:1rem;
-      margin-bottom:4px;
-      font-weight:800;
-    }
-
-    .feature-item p{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
-    .architecture{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-    }
-
-    .arch-card{
-      padding:22px;
-      border-radius:24px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,0.08);
-      min-height:240px;
-    }
-
-    .arch-card .mini{
-      color:#ffccd3;
-      text-transform:uppercase;
-      font-size:.75rem;
-      letter-spacing:.08em;
-      font-weight:800;
-      margin-bottom:12px;
-      display:block;
-    }
-
-    .arch-card h3{
-      font-size:1.15rem;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .arch-card p{
-      color:var(--muted);
-      font-size:.94rem;
-    }
-
-    .os-flow{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:14px;
-      margin-top:24px;
-    }
-
-    .flow-card{
-      padding:18px;
-      border-radius:20px;
-      text-align:center;
-      background:rgba(255,255,255,0.035);
-      border:1px solid rgba(255,255,255,0.07);
-      position:relative;
-    }
-
-    .flow-card:not(:last-child)::after{
-      content:"→";
-      position:absolute;
-      top:50%;
-      right:-12px;
-      transform:translateY(-50%);
-      font-size:1.1rem;
-      color:rgba(255,255,255,0.45);
-      font-weight:800;
-    }
-
-    .flow-number{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      margin:0 auto 12px;
-      font-weight:900;
-      background:rgba(255,58,85,0.18);
-      border:1px solid rgba(255,255,255,0.08);
-      color:#fff;
-    }
-
-    .flow-card h4{
-      font-size:.98rem;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .flow-card p{
-      color:var(--muted);
-      font-size:.88rem;
+      color:var(--soft);
       line-height:1.45;
     }
 
-    .roadmap{
+    .grid-3{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
+      grid-template-columns:1.1fr .9fr .9fr;
+      gap:20px;
+      margin-bottom:20px;
     }
 
-    .roadmap-card{
-      padding:24px;
-      border-radius:24px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,0.08);
-      position:relative;
-      overflow:hidden;
+    .section-card{
+      padding:22px;
     }
 
-    .roadmap-card::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:0;
-      right:0;
-      height:4px;
-      background:linear-gradient(90deg, var(--crimson-bright), #7bb0ff, #6df0d8);
-    }
-
-    .roadmap-card span{
-      display:inline-block;
-      font-size:.8rem;
-      color:#ffd5dc;
-      text-transform:uppercase;
+    .section-card h3{
+      font-size:1.15rem;
       font-weight:800;
-      letter-spacing:.08em;
-      margin-bottom:10px;
+      margin-bottom:4px;
     }
 
-    .roadmap-card h3{
-      font-size:1.2rem;
-      font-weight:800;
-      margin-bottom:10px;
+    .section-card .sub{
+      color:var(--soft);
+      font-size:.9rem;
+      margin-bottom:18px;
     }
 
-    .roadmap-card p{
-      color:var(--muted);
-      font-size:.95rem;
-    }
-
-    .stack-grid{
+    .status-list{
       display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:16px;
+      gap:12px;
     }
 
-    .stack-item{
-      text-align:center;
-      padding:20px 14px;
-      border-radius:22px;
-      background:rgba(255,255,255,0.035);
-      border:1px solid rgba(255,255,255,0.08);
-    }
-
-    .stack-item strong{
-      display:block;
-      font-size:1rem;
-      margin-bottom:5px;
-    }
-
-    .stack-item span{
-      color:var(--muted);
-      font-size:.88rem;
-    }
-
-    .cta{
-      padding:18px 0 84px;
-    }
-
-    .cta-box{
-      position:relative;
-      overflow:hidden;
-      padding:34px;
-      border-radius:34px;
-      background:
-        radial-gradient(circle at top right, rgba(106,166,255,.22), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(255,58,85,.24), transparent 35%),
-        linear-gradient(135deg, #101726 0%, #0e1220 52%, #121a2d 100%);
-      border:1px solid rgba(255,255,255,0.09);
-      box-shadow:var(--shadow);
-    }
-
-    .cta-box::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.05) 28%, transparent 48%);
-      transform:translateX(-100%);
-      animation:shine 6s linear infinite;
-      pointer-events:none;
-    }
-
-    @keyframes shine{
-      100%{transform:translateX(180%);}
-    }
-
-    .cta-box h2{
-      font-size:clamp(2.1rem, 5vw, 4rem);
-      line-height:.96;
-      letter-spacing:-.04em;
-      font-weight:900;
-      max-width:820px;
-      margin-bottom:14px;
-    }
-
-    .cta-box p{
-      color:#d0d9f1;
-      max-width:760px;
-      font-size:1.02rem;
-      margin-bottom:24px;
-    }
-
-    footer{
-      border-top:1px solid rgba(255,255,255,0.07);
-      background:rgba(0,0,0,0.18);
-      position:relative;
-      z-index:1;
-    }
-
-    .footer-wrap{
-      padding:26px 0;
+    .status-item{
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:12px;
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .status-left{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .status-badge{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      background:rgba(255,255,255,.06);
+    }
+
+    .status-name{
+      font-size:.95rem;
+      font-weight:800;
+    }
+
+    .status-meta{
+      font-size:.82rem;
+      color:var(--soft);
+      margin-top:2px;
+    }
+
+    .status-pill{
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:.74rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      white-space:nowrap;
+    }
+
+    .checkin{background:rgba(53,215,141,.14); color:#baffdd;}
+    .ondeck{background:rgba(113,168,255,.14); color:#d7e6ff;}
+    .lastcall{background:rgba(255,70,100,.18); color:#ffd7de;}
+    .results{background:rgba(255,211,108,.16); color:#ffe9ab;}
+
+    .timeline{
+      display:grid;
+      gap:12px;
+    }
+
+    .timeline-item{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .timeline-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:6px;
+      align-items:center;
+    }
+
+    .timeline-top strong{
+      font-size:.93rem;
+      font-weight:800;
+    }
+
+    .timeline-top span{
+      color:var(--soft);
+      font-size:.8rem;
+    }
+
+    .timeline-item p{
+      color:var(--soft);
+      font-size:.86rem;
+      line-height:1.5;
+    }
+
+    .chart{
+      display:grid;
+      gap:12px;
+    }
+
+    .bar-row{
+      display:grid;
+      gap:8px;
+    }
+
+    .bar-label{
+      display:flex;
+      justify-content:space-between;
+      font-size:.84rem;
+      color:#e9efff;
+    }
+
+    .bar-track{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      overflow:hidden;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--red-bright), var(--blue));
+    }
+
+    .split-2{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
       gap:20px;
-      color:var(--muted);
-      font-size:.92rem;
+      margin-bottom:20px;
     }
 
-    .footer-wrap strong{
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:640px;
+    }
+
+    th, td{
+      text-align:left;
+      padding:14px 12px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      font-size:.9rem;
+    }
+
+    th{
+      color:#dfe7fb;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    td{
+      color:#eef3ff;
+    }
+
+    td.muted{
+      color:var(--soft);
+    }
+
+    .action-btn{
+      padding:9px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
       color:#fff;
+      font-size:.82rem;
+      font-weight:700;
     }
 
-    .reveal{
-      opacity:0;
-      transform:translateY(26px);
-      transition:opacity .7s ease, transform .7s ease;
+    .pay-cards{
+      display:grid;
+      gap:12px;
     }
 
-    .reveal.visible{
-      opacity:1;
-      transform:translateY(0);
+    .pay-card{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .pay-card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .pay-card-top strong{
+      font-size:1rem;
+      font-weight:800;
+    }
+
+    .pay-card p{
+      color:var(--soft);
+      font-size:.88rem;
+      line-height:1.5;
+      margin-bottom:12px;
+    }
+
+    .price{
+      font-size:1.5rem;
+      font-weight:900;
+      margin-bottom:12px;
+    }
+
+    .tiny{
+      font-size:.82rem;
+      color:var(--soft);
+    }
+
+    .empty-state{
+      padding:50px 24px;
+      text-align:center;
+      color:var(--soft);
+    }
+
+    .empty-state h3{
+      font-size:1.35rem;
+      color:#fff;
+      margin-bottom:10px;
+    }
+
+    .mobile-top{
+      display:none;
     }
 
     @media (max-width: 1180px){
-      .hero-wrap,
-      .split{
+      .hero,
+      .grid-3,
+      .split-2{
         grid-template-columns:1fr;
-      }
-
-      .sports-grid,
-      .triggers-grid,
-      .architecture{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .stack-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
-
-      .roadmap{
-        grid-template-columns:1fr;
-      }
-
-      .os-flow{
-        grid-template-columns:1fr;
-      }
-
-      .flow-card:not(:last-child)::after{
-        content:"↓";
-        right:50%;
-        top:auto;
-        bottom:-16px;
-        transform:translateX(50%);
       }
     }
 
     @media (max-width: 900px){
-      .nav-links{
-        display:none;
-      }
-
-      .stats{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .section-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media (max-width: 700px){
-      .hero{
-        padding-top:52px;
-      }
-
-      .container{
-        width:min(var(--max), calc(100% - 24px));
-      }
-
-      .nav{
-        flex-wrap:wrap;
-      }
-
-      .nav-actions{
-        width:100%;
-      }
-
-      .nav-actions .btn{
-        flex:1;
-      }
-
-      .sports-grid,
-      .triggers-grid,
-      .architecture,
-      .stack-grid,
-      .stats{
+      .app-shell{
         grid-template-columns:1fr;
       }
 
-      .panel,
-      .cta-box,
-      .hero-card{
-        padding:20px;
+      .sidebar{
+        display:none;
       }
 
-      .footer-wrap{
+      .mobile-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        margin-bottom:16px;
+      }
+
+      .mobile-brand{
+        display:flex;
+        align-items:center;
+        gap:12px;
+      }
+
+      .mobile-brand .brand-mark{
+        width:44px;
+        height:44px;
+      }
+
+      .topbar{
         flex-direction:column;
-        align-items:flex-start;
+        align-items:stretch;
+      }
+
+      .top-actions{
+        width:100%;
+      }
+
+      .top-actions button{
+        flex:1;
+      }
+    }
+
+    @media (max-width: 640px){
+      .main{
+        padding:16px;
+      }
+
+      .hero-stats{
+        grid-template-columns:1fr;
+      }
+
+      .search input{
+        padding-left:44px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="grid-glow"></div>
-
-  <header>
-    <div class="container nav">
-      <a href="#top" class="brand">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
         <div class="brand-mark"><span>MC</span></div>
-        <div class="brand-text">
+        <div class="brand-copy">
           <strong>MeetCheck</strong>
-          <small>From Chaos to Clarity</small>
+          <small>Live Sports OS</small>
         </div>
-      </a>
-
-      <nav class="nav-links">
-        <a href="#sports">Sports</a>
-        <a href="#triggers">Triggers</a>
-        <a href="#platform">Platform</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#roadmap">Roadmap</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="#platform" class="btn btn-outline">Explore OS</a>
-        <a href="#cta" class="btn btn-primary">Build the MVP</a>
       </div>
-    </div>
-  </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-wrap">
-        <div class="reveal">
-          <div class="eyebrow">
-            <span class="dot"></span>
-            Universal Sports Notification Engine
-          </div>
-
-          <h1>
-            The operating system for
-            <span class="gradient">live youth sports.</span>
-          </h1>
-
-          <p>
-            MeetCheck transforms meet-day chaos into real-time clarity. Built for Track &amp; Field, Swimming,
-            Wrestling, and Gymnastics, it gives coaches a command center and gives parents and athletes the one thing
-            they need most: instant, reliable event updates exactly when they matter.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#triggers" class="btn btn-primary">See Event Triggers</a>
-            <a href="#architecture" class="btn btn-outline">View Technical Blueprint</a>
-          </div>
-
-          <div class="stats">
-            <div class="stat">
-              <strong>&lt; 50ms</strong>
-              <span>Target notification latency</span>
+      <div class="sidebar-group">
+        <div class="sidebar-label">Workspace</div>
+        <div class="nav-links">
+          <button class="nav-btn active" data-tab="dashboard">
+            <div class="left">
+              <div class="icon">🏠</div>
+              <span>Dashboard</span>
             </div>
-            <div class="stat">
-              <strong>4</strong>
-              <span>High-urgency parent alerts</span>
+            <div class="badge">4</div>
+          </button>
+
+          <button class="nav-btn" data-tab="events">
+            <div class="left">
+              <div class="icon">📅</div>
+              <span>Events</span>
             </div>
-            <div class="stat">
-              <strong>Offline-First</strong>
-              <span>Schedules available in weak venues</span>
+            <div class="badge">18</div>
+          </button>
+
+          <button class="nav-btn" data-tab="alerts">
+            <div class="left">
+              <div class="icon">🔔</div>
+              <span>Alerts</span>
             </div>
-            <div class="stat">
-              <strong>2-Sided</strong>
-              <span>Admin portal + user app</span>
+            <div class="badge">9</div>
+          </button>
+
+          <button class="nav-btn" data-tab="admin">
+            <div class="left">
+              <div class="icon">🛠️</div>
+              <span>Admin Portal</span>
             </div>
+            <div class="badge">Live</div>
+          </button>
+
+          <button class="nav-btn" data-tab="billing">
+            <div class="left">
+              <div class="icon">💳</div>
+              <span>Billing</span>
+            </div>
+            <div class="badge">Pro</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="quick-card">
+        <h3>Aura Follow State</h3>
+        <p>
+          Followed events stay visually prioritized with MeetCheck’s crimson live state,
+          so parents and athletes know exactly what matters right now.
+        </p>
+        <a href="#!" class="pill-btn">Go Live</a>
+      </div>
+
+      <div class="quick-card">
+        <h3>Offline-First Mode</h3>
+        <p>
+          Cached schedule data keeps the app useful even when venue connectivity is weak or unstable.
+        </p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="mobile-top">
+        <div class="mobile-brand">
+          <div class="brand-mark"><span>MC</span></div>
+          <div class="brand-copy">
+            <strong>MeetCheck</strong>
+            <small>Live Sports OS</small>
           </div>
         </div>
+        <button class="ghost-btn" id="mobileCycle">Switch View</button>
+      </div>
 
-        <div class="hero-card reveal">
-          <div class="dash-top">
-            <div>
-              <div class="screen-title">MeetCheck Live</div>
-              <div class="screen-sub">Youth Sports Meet OS</div>
+      <div class="topbar">
+        <div class="search">
+          <span>⌕</span>
+          <input type="text" placeholder="Search meets, events, athletes, or alerts..." />
+        </div>
+
+        <div class="top-actions">
+          <button class="ghost-btn">Offline Cache</button>
+          <button class="primary-btn">Create Alert</button>
+        </div>
+      </div>
+
+      <section class="content-section active" id="dashboard">
+        <div class="hero">
+          <div class="panel hero-card">
+            <div class="eyebrow">
+              <span class="live-dot"></span>
+              MeetCheck is Live
             </div>
-            <div class="chip"><span class="live"></span> Live Updates</div>
+
+            <h1>
+              The actual app for
+              <span>real-time meet clarity.</span>
+            </h1>
+
+            <p>
+              This interface is built for parents, athletes, coaches, and directors who need instant awareness during
+              fast-moving youth sports events. Follow specific events, receive urgent notifications, monitor changes,
+              and eliminate meet-day confusion in one place.
+            </p>
+
+            <div class="hero-stats">
+              <div class="mini-stat">
+                <strong>18</strong>
+                <span>Active followed events</span>
+              </div>
+              <div class="mini-stat">
+                <strong>9</strong>
+                <span>New alerts sent today</span>
+              </div>
+              <div class="mini-stat">
+                <strong>&lt;50ms</strong>
+                <span>Target push latency</span>
+              </div>
+            </div>
           </div>
 
-          <div class="phone-shell">
-            <div class="screen">
-              <div class="screen-top">
-                <div>
-                  <div class="screen-title">Delaware Regional Invite</div>
-                  <div class="screen-sub">Followed Events</div>
-                </div>
-                <div class="tag tag-following">Aura Active</div>
-              </div>
-
-              <div class="event-card">
-                <div class="event-row">
-                  <div class="event-left">
-                    <h4>Boys 200m Final</h4>
-                    <p>Track &amp; Field · Heat 2 · Lane 4</p>
+          <div class="panel phone-card">
+            <div class="phone-shell">
+              <div class="phone-screen">
+                <div class="screen-head">
+                  <div>
+                    <strong>Followed Events</strong>
+                    <small>Delaware Regional Invite</small>
                   </div>
-                  <div class="tag tag-following">Following ★</div>
+                  <div class="eyebrow" style="margin:0; padding:8px 12px; font-size:.72rem;">Aura On</div>
                 </div>
-              </div>
 
-              <div class="event-card">
-                <div class="event-row">
-                  <div class="event-left">
-                    <h4>Girls 100m Butterfly</h4>
-                    <p>Swimming · Heat 3 · Block 5</p>
+                <div class="event-card">
+                  <div class="event-top">
+                    <div>
+                      <div class="event-title">Boys 200m Final</div>
+                      <div class="event-sub">Track &amp; Field · Heat 2 · Lane 4</div>
+                    </div>
+                    <div class="star">★</div>
                   </div>
-                  <div class="tag" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.08);">Queued</div>
                 </div>
-              </div>
 
-              <div class="notif">
-                <div class="notif-icon">🔴</div>
-                <div>
-                  <strong>LAST CALL</strong>
-                  <span>Boys 200m Final is issuing final check-in now. Report to staging immediately.</span>
+                <div class="event-card">
+                  <div class="event-top">
+                    <div>
+                      <div class="event-title">Girls 100m Butterfly</div>
+                      <div class="event-sub">Swimming · Heat 3 · Block 5</div>
+                    </div>
+                    <div class="star">★</div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="notif" style="margin-top:10px;">
-                <div class="notif-icon">🏁</div>
-                <div>
-                  <strong>FINAL RESULTS</strong>
-                  <span>Scores are posted. Tap to view placements, times, and athlete results.</span>
+                <div class="notif">
+                  <div class="notif-icon">🔴</div>
+                  <div>
+                    <strong>LAST CALL</strong>
+                    <span>Boys 200m Final is issuing final check-in. Athlete report needed now.</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="sports">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>Built for the chaos of live competition.</h2>
-          </div>
-          <p>
-            MeetCheck is designed for youth sports environments where delays, check-ins, heat changes,
-            and results move fast—and where missed information creates real stress for families and coaches.
-          </p>
-        </div>
-
-        <div class="panel reveal">
-          <div class="sports-grid">
-            <div class="sport-card">
-              <div class="sport-icon">🏃</div>
-              <h3>Track &amp; Field</h3>
-              <p>Race calls, staging notifications, event progress, and instant results for fast-moving meet schedules.</p>
-            </div>
-
-            <div class="sport-card">
-              <div class="sport-icon">🏊</div>
-              <h3>Swimming</h3>
-              <p>Heat-based scheduling, ready-room timing, and deck alerts for parents trying not to miss a swim.</p>
-            </div>
-
-            <div class="sport-card">
-              <div class="sport-icon">🤼</div>
-              <h3>Wrestling</h3>
-              <p>Bracket-aware structure, mat assignments, on-deck readiness, and progression updates in real time.</p>
-            </div>
-
-            <div class="sport-card">
-              <div class="sport-icon">🤸</div>
-              <h3>Gymnastics</h3>
-              <p>Rotation visibility, apparatus sequence awareness, and clear check-in timing for athletes and families.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="triggers">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>The four alerts everyone is waiting for.</h2>
-          </div>
-          <p>
-            The MVP focuses on the high-value moments that reduce confusion immediately. These triggers are fast,
-            urgent, and easy for admins to issue from a single command center.
-          </p>
-        </div>
-
-        <div class="triggers-grid reveal">
-          <div class="trigger">
-            <strong>01 · CHECK-IN OPEN</strong>
-            <h3>Report to staging</h3>
-            <p>Alerts athletes that check-in has opened so they can move toward the correct area without delay.</p>
-          </div>
-
-          <div class="trigger">
-            <strong>02 · ON DECK</strong>
-            <h3>It’s almost time</h3>
-            <p>Notifies parents and athletes that an event is imminent so they can get to the viewing or ready area.</p>
-          </div>
-
-          <div class="trigger">
-            <strong>03 · 🔴 LAST CALL</strong>
-            <h3>High-urgency final alert</h3>
-            <p>Designed for maximum visibility with urgent messaging and visual cues when check-in is about to close.</p>
-          </div>
-
-          <div class="trigger">
-            <strong>04 · FINAL RESULTS</strong>
-            <h3>Scores posted instantly</h3>
-            <p>Pushes final times, placements, or outcomes the moment results are available in the system.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="platform">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>A two-sided platform with one job: clarity.</h2>
-          </div>
-          <p>
-            MeetCheck connects the people controlling the event flow with the people desperate for timely information.
-            That connection becomes the operating system for the meet itself.
-          </p>
-        </div>
-
-        <div class="split">
-          <div class="panel reveal">
-            <div class="chip" style="margin-bottom:16px;"><span class="live"></span> Admin Portal</div>
-            <h3 style="font-size:1.8rem; line-height:1.05; margin-bottom:10px; font-weight:900;">Command center for coaches and directors.</h3>
-            <p style="color:var(--muted);">
-              A fast, no-friction interface where admins can update event statuses from dropdown actions,
-              trigger segmented notifications, and maintain live control over the flow of the meet.
-            </p>
-
-            <div class="feature-list">
-              <div class="feature-item">
-                <div class="feature-bullet">⚡</div>
-                <div>
-                  <h4>One-tap status changes</h4>
-                  <p>Issue event changes instantly with minimal friction during high-pressure meet operations.</p>
-                </div>
-              </div>
-
-              <div class="feature-item">
-                <div class="feature-bullet">🎯</div>
-                <div>
-                  <h4>Segmented broadcasts</h4>
-                  <p>Only users following the affected event receive the push payload—no noisy mass alerts.</p>
-                </div>
-              </div>
-
-              <div class="feature-item">
-                <div class="feature-bullet">📣</div>
-                <div>
-                  <h4>No more human megaphones</h4>
-                  <p>Reduce the need for staff to manually chase athletes and parents across crowded venues.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel reveal">
-            <div class="chip" style="margin-bottom:16px; background:rgba(106,166,255,0.14); color:#dfeaff;"><span class="live" style="background:#6aa6ff; box-shadow:0 0 14px #6aa6ff;"></span> User App</div>
-            <h3 style="font-size:1.8rem; line-height:1.05; margin-bottom:10px; font-weight:900;">A clean app for parents and athletes.</h3>
-            <p style="color:var(--muted);">
-              Users follow the exact events they care about and receive low-latency, high-urgency notifications.
-              The experience is fluid, native-feeling, and reliable even in poor-connectivity venues.
-            </p>
-
-            <div class="feature-list">
-              <div class="feature-item">
-                <div class="feature-bullet">★</div>
-                <div>
-                  <h4>Aura follow state</h4>
-                  <p>Crimson Red “solid-star” design language makes followed events instantly recognizable.</p>
-                </div>
-              </div>
-
-              <div class="feature-item">
-                <div class="feature-bullet">📴</div>
-                <div>
-                  <h4>Offline-first schedules</h4>
-                  <p>Cached event views remain accessible inside arenas and facilities with weak signal.</p>
-                </div>
-              </div>
-
-              <div class="feature-item">
-                <div class="feature-bullet">🔔</div>
-                <div>
-                  <h4>High-value notifications</h4>
-                  <p>Every push is purposeful, time-sensitive, and directly tied to what the user chose to follow.</p>
+                <div class="notif">
+                  <div class="notif-icon">🏁</div>
+                  <div>
+                    <strong>FINAL RESULTS</strong>
+                    <span>Girls 100m Butterfly results are now posted and ready to view.</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="panel reveal" style="margin-top:22px;">
-          <h3 style="font-size:1.6rem; font-weight:900; margin-bottom:10px;">How the MeetCheck Operating System flows</h3>
-          <p style="color:var(--muted); max-width:880px;">
-            The full OS is intentionally simple from the user’s point of view, even though the backend is handling
-            high concurrency, event normalization, and segmented delivery at speed.
-          </p>
+        <div class="grid-3">
+          <div class="panel section-card">
+            <h3>Live Status Queue</h3>
+            <div class="sub">Real-time trigger states across active sports.</div>
 
-          <div class="os-flow">
-            <div class="flow-card">
-              <div class="flow-number">1</div>
-              <h4>Meet Created</h4>
-              <p>Admin publishes meet structure, events, heats, brackets, and athlete relationships.</p>
-            </div>
-            <div class="flow-card">
-              <div class="flow-number">2</div>
-              <h4>Users Follow</h4>
-              <p>Parents and athletes subscribe to events through a streamlined app experience.</p>
-            </div>
-            <div class="flow-card">
-              <div class="flow-number">3</div>
-              <h4>Status Changes</h4>
-              <p>Admin selects a trigger like Check-In Open, On Deck, Last Call, or Final Results.</p>
-            </div>
-            <div class="flow-card">
-              <div class="flow-number">4</div>
-              <h4>Engine Broadcasts</h4>
-              <p>Cloud logic matches the event to follower records and sends targeted push alerts.</p>
-            </div>
-            <div class="flow-card">
-              <div class="flow-number">5</div>
-              <h4>Clarity Delivered</h4>
-              <p>Families get the update immediately and can act before the moment is missed.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="architecture">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>Architecture designed for resilience, speed, and scale.</h2>
-          </div>
-          <p>
-            MeetCheck’s backend is engineered around fast writes, targeted fan-out, and a flexible
-            sports data model that can support multiple meet formats without rebuilding the platform each time.
-          </p>
-        </div>
-
-        <div class="architecture reveal">
-          <div class="arch-card">
-            <span class="mini">Notification Engine</span>
-            <h3>Firebase Cloud Messaging + Cloud Functions</h3>
-            <p>
-              Admin actions trigger server-side logic that queries the followedEvents array in Firestore and
-              instantly broadcasts the correct payload only to the relevant subscribers.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <span class="mini">Data Model</span>
-            <h3>Normalized for universal sports support</h3>
-            <p>
-              Meets → Events → Athletes creates a flexible foundation capable of handling heat-based,
-              rotation-based, and bracket-based competition structures under one platform architecture.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <span class="mini">Experience Layer</span>
-            <h3>Offline-first and native-feeling UI</h3>
-            <p>
-              Cached schedules keep the interface useful even in connectivity-poor venues, while the Aura
-              design system keeps interactions clear, fluid, and visually prioritized.
-            </p>
-          </div>
-
-          <div class="arch-card">
-            <span class="mini">Monetization</span>
-            <h3>Stripe inside the critical path</h3>
-            <p>
-              One-click access models let parents purchase meet-specific visibility or unlock seasonal subscriptions
-              without leaving the product flow or increasing friction.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <div class="split">
-          <div class="panel reveal">
-            <div class="chip" style="margin-bottom:16px;"><span class="live"></span> MVP Execution</div>
-            <h3 style="font-size:1.75rem; font-weight:900; line-height:1.05; margin-bottom:10px;">Move fast now. Scale with intent later.</h3>
-            <p style="color:var(--muted);">
-              The first phase prioritizes speed-to-market with a Progressive Web App and a robust Firebase core.
-              This gives the team room to validate workflows, retention, and monetization before expanding to a full native experience.
-            </p>
-
-            <div class="feature-list">
-              <div class="feature-item">
-                <div class="feature-bullet">🫧</div>
-                <div>
-                  <h4>Bubble.io frontend</h4>
-                  <p>Rapid iteration and quick deployment for the first production-ready PWA version.</p>
+            <div class="status-list">
+              <div class="status-item">
+                <div class="status-left">
+                  <div class="status-badge">🏃</div>
+                  <div>
+                    <div class="status-name">Boys 200m Final</div>
+                    <div class="status-meta">Track &amp; Field · Heat 2</div>
+                  </div>
                 </div>
+                <div class="status-pill lastcall">Last Call</div>
               </div>
-              <div class="feature-item">
-                <div class="feature-bullet">🔥</div>
-                <div>
-                  <h4>Firebase backend</h4>
-                  <p>Firestore, Auth, and Functions provide a fast, scalable operational core for the MVP.</p>
+
+              <div class="status-item">
+                <div class="status-left">
+                  <div class="status-badge">🏊</div>
+                  <div>
+                    <div class="status-name">Girls 100m Butterfly</div>
+                    <div class="status-meta">Swimming · Heat 3</div>
+                  </div>
                 </div>
+                <div class="status-pill results">Results</div>
               </div>
-              <div class="feature-item">
-                <div class="feature-bullet">📱</div>
-                <div>
-                  <h4>React Native in Phase 3</h4>
-                  <p>Transition to native once product-market fit and experience requirements demand it.</p>
+
+              <div class="status-item">
+                <div class="status-left">
+                  <div class="status-badge">🤼</div>
+                  <div>
+                    <div class="status-name">Mat 2 Semifinal</div>
+                    <div class="status-meta">Wrestling · Bracket A</div>
+                  </div>
                 </div>
+                <div class="status-pill ondeck">On Deck</div>
+              </div>
+
+              <div class="status-item">
+                <div class="status-left">
+                  <div class="status-badge">🤸</div>
+                  <div>
+                    <div class="status-name">Floor Rotation Group B</div>
+                    <div class="status-meta">Gymnastics · Rotation 4</div>
+                  </div>
+                </div>
+                <div class="status-pill checkin">Check-In Open</div>
               </div>
             </div>
           </div>
 
-          <div class="panel reveal">
-            <div class="chip" style="margin-bottom:16px; background:rgba(106,166,255,0.14); color:#dfeaff;"><span class="live" style="background:#6aa6ff; box-shadow:0 0 14px #6aa6ff;"></span> Digital Twin Vision</div>
-            <h3 style="font-size:1.75rem; font-weight:900; line-height:1.05; margin-bottom:10px;">Toward predictive meet intelligence.</h3>
-            <p style="color:var(--muted);">
-              The roadmap extends beyond manual trigger delivery. The long-term vision is a Digital Twin framework
-              that ingests raw timing data and eventually forecasts delays before coaches and parents feel the ripple effects.
-            </p>
+          <div class="panel section-card">
+            <h3>Recent Alert Feed</h3>
+            <div class="sub">What users are receiving right now.</div>
 
-            <div class="feature-list">
-              <div class="feature-item">
-                <div class="feature-bullet">🧠</div>
-                <div>
-                  <h4>AI delay predictions</h4>
-                  <p>Forecast likely timing changes before they become visible to end users at the venue.</p>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-top">
+                  <strong>🔴 Last Call Sent</strong>
+                  <span>2 mins ago</span>
                 </div>
+                <p>Boys 200m Final pushed to 143 followers and 18 athlete accounts.</p>
               </div>
-              <div class="feature-item">
-                <div class="feature-bullet">📡</div>
-                <div>
-                  <h4>Timing company ingestion</h4>
-                  <p>Bring in raw competition data from external timing systems to reduce manual dependency.</p>
+
+              <div class="timeline-item">
+                <div class="timeline-top">
+                  <strong>🏁 Final Results Posted</strong>
+                  <span>7 mins ago</span>
                 </div>
+                <p>Girls 100m Butterfly results delivered to 201 subscribed users.</p>
               </div>
-              <div class="feature-item">
-                <div class="feature-bullet">🪞</div>
-                <div>
-                  <h4>Live digital twin</h4>
-                  <p>Create a dynamic model of meet progression that improves user trust and planning accuracy.</p>
+
+              <div class="timeline-item">
+                <div class="timeline-top">
+                  <strong>📣 On Deck Update</strong>
+                  <span>10 mins ago</span>
                 </div>
+                <p>Mat 2 Semifinal alert pushed to wrestling families and coaches.</p>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="roadmap">
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>Roadmap from doctrine to deployment.</h2>
-          </div>
-          <p>
-            MeetCheck starts with ruthless focus on the core communication problem, then expands into a broader
-            intelligence layer for live-event operations.
-          </p>
-        </div>
+          <div class="panel section-card">
+            <h3>Engagement Snapshot</h3>
+            <div class="sub">Live app activity across the meet.</div>
 
-        <div class="roadmap reveal">
-          <div class="roadmap-card">
-            <span>Phase 1</span>
-            <h3>MVP Notification Core</h3>
-            <p>
-              Admin portal, followed events, the four core push triggers, offline-first schedule access,
-              and meet-specific monetization with Stripe.
-            </p>
-          </div>
+            <div class="chart">
+              <div class="bar-row">
+                <div class="bar-label">
+                  <span>Followed Events</span>
+                  <span>84%</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width:84%"></div></div>
+              </div>
 
-          <div class="roadmap-card">
-            <span>Phase 2</span>
-            <h3>Operational Expansion</h3>
-            <p>
-              Broader sport normalization, deeper event-state visibility, improved admin workflow tooling,
-              and higher concurrency optimization at scale.
-            </p>
-          </div>
+              <div class="bar-row">
+                <div class="bar-label">
+                  <span>Push Open Rate</span>
+                  <span>72%</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width:72%"></div></div>
+              </div>
 
-          <div class="roadmap-card">
-            <span>Phase 3</span>
-            <h3>Digital Twin Intelligence</h3>
-            <p>
-              Native experience, data ingestion from timing systems, and machine-learning powered delay prediction
-              that shifts MeetCheck from reactive utility to predictive infrastructure.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+              <div class="bar-row">
+                <div class="bar-label">
+                  <span>Offline Schedule Usage</span>
+                  <span>61%</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width:61%"></div></div>
+              </div>
 
-    <section>
-      <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <h2>The execution stack.</h2>
-          </div>
-          <p>
-            Chosen to ship fast now, stay resilient under pressure, and position the product for expansion into a
-            truly universal live sports platform.
-          </p>
-        </div>
-
-        <div class="panel reveal">
-          <div class="stack-grid">
-            <div class="stack-item">
-              <strong>Bubble.io</strong>
-              <span>Rapid PWA frontend</span>
-            </div>
-            <div class="stack-item">
-              <strong>Firestore</strong>
-              <span>Normalized live data</span>
-            </div>
-            <div class="stack-item">
-              <strong>Firebase Auth</strong>
-              <span>User identity layer</span>
-            </div>
-            <div class="stack-item">
-              <strong>Cloud Functions</strong>
-              <span>Event-triggered logic</span>
-            </div>
-            <div class="stack-item">
-              <strong>FCM</strong>
-              <span>Push delivery engine</span>
-            </div>
-            <div class="stack-item">
-              <strong>Stripe</strong>
-              <span>One-click monetization</span>
-            </div>
-            <div class="stack-item">
-              <strong>Offline Cache</strong>
-              <span>Venue resilience</span>
-            </div>
-            <div class="stack-item">
-              <strong>React Native</strong>
-              <span>Phase 3 native scale</span>
-            </div>
-            <div class="stack-item">
-              <strong>ML Layer</strong>
-              <span>Delay prediction engine</span>
-            </div>
-            <div class="stack-item">
-              <strong>Aura Design</strong>
-              <span>Fluid user experience</span>
+              <div class="bar-row">
+                <div class="bar-label">
+                  <span>Paid Meet Access</span>
+                  <span>47%</span>
+                </div>
+                <div class="bar-track"><div class="bar-fill" style="width:47%"></div></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="cta" id="cta">
-      <div class="container">
-        <div class="cta-box reveal">
-          <div class="chip" style="margin-bottom:16px;"><span class="live"></span> MeetCheck Operating System</div>
-          <h2>We’re not building another app. We’re building the central nervous system for live sports.</h2>
-          <p>
-            A resilient engine. A universal data model. A beautiful real-time experience. A product that reduces stress,
-            eliminates confusion, and makes live youth sports feel coordinated instead of chaotic.
-          </p>
-          <div class="hero-actions">
-            <a href="#" class="btn btn-primary">Launch the Blueprint</a>
-            <a href="#top" class="btn btn-outline">Back to Top</a>
+        <div class="split-2">
+          <div class="panel section-card">
+            <h3>Today’s Meet Schedule</h3>
+            <div class="sub">Normalized view across sports and event structures.</div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Sport</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>3:05 PM</td>
+                    <td>Boys 200m Final</td>
+                    <td class="muted">Track &amp; Field</td>
+                    <td>🔴 Last Call</td>
+                    <td><button class="action-btn">View</button></td>
+                  </tr>
+                  <tr>
+                    <td>3:12 PM</td>
+                    <td>Girls 100m Butterfly</td>
+                    <td class="muted">Swimming</td>
+                    <td>🏁 Results</td>
+                    <td><button class="action-btn">View</button></td>
+                  </tr>
+                  <tr>
+                    <td>3:18 PM</td>
+                    <td>Mat 2 Semifinal</td>
+                    <td class="muted">Wrestling</td>
+                    <td>📣 On Deck</td>
+                    <td><button class="action-btn">View</button></td>
+                  </tr>
+                  <tr>
+                    <td>3:25 PM</td>
+                    <td>Floor Rotation Group B</td>
+                    <td class="muted">Gymnastics</td>
+                    <td>✅ Check-In Open</td>
+                    <td><button class="action-btn">View</button></td>
+                  </tr>
+                  <tr>
+                    <td>3:40 PM</td>
+                    <td>Boys 4x100 Relay</td>
+                    <td class="muted">Track &amp; Field</td>
+                    <td>Queued</td>
+                    <td><button class="action-btn">View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel section-card">
+            <h3>Meet Access Plans</h3>
+            <div class="sub">Integrated one-click monetization.</div>
+
+            <div class="pay-cards">
+              <div class="pay-card">
+                <div class="pay-card-top">
+                  <strong>Single Meet Access</strong>
+                  <span class="status-pill checkin">Popular</span>
+                </div>
+                <p>Unlock live alerts, results, and followed event tracking for one competition day.</p>
+                <div class="price">$4.99</div>
+                <button class="primary-btn" style="width:100%;">Unlock Meet</button>
+              </div>
+
+              <div class="pay-card">
+                <div class="pay-card-top">
+                  <strong>Season Pass</strong>
+                  <span class="status-pill ondeck">Best Value</span>
+                </div>
+                <p>Get season-long access for all supported meets, sports, push alerts, and premium updates.</p>
+                <div class="price">$29.99</div>
+                <button class="ghost-btn" style="width:100%;">Upgrade to Season</button>
+              </div>
+            </div>
+
+            <div class="tiny" style="margin-top:12px;">
+              Stripe-ready flow for fast conversion with minimal checkout friction.
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer>
-    <div class="container footer-wrap">
-      <div>
-        <strong>MeetCheck</strong> — From Chaos to Clarity
-      </div>
-      <div>
-        Concept presentation for the MeetCheck Vision and Platform Squads
-      </div>
-    </div>
-  </footer>
+      <section class="content-section" id="events">
+        <div class="panel section-card">
+          <h3>All Events</h3>
+          <div class="sub">Cross-sport event browser with normalized data structure.</div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Sport</th>
+                  <th>Structure</th>
+                  <th>Followers</th>
+                  <th>Status</th>
+                  <th>Follow</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Boys 200m Final</td>
+                  <td class="muted">Track &amp; Field</td>
+                  <td class="muted">Heat Based</td>
+                  <td>143</td>
+                  <td>🔴 Last Call</td>
+                  <td><button class="action-btn">Following ★</button></td>
+                </tr>
+                <tr>
+                  <td>Girls 100m Butterfly</td>
+                  <td class="muted">Swimming</td>
+                  <td class="muted">Heat Based</td>
+                  <td>201</td>
+                  <td>🏁 Results</td>
+                  <td><button class="action-btn">Following ★</button></td>
+                </tr>
+                <tr>
+                  <td>Mat 2 Semifinal</td>
+                  <td class="muted">Wrestling</td>
+                  <td class="muted">Bracket Based</td>
+                  <td>98</td>
+                  <td>📣 On Deck</td>
+                  <td><button class="action-btn">Follow</button></td>
+                </tr>
+                <tr>
+                  <td>Floor Rotation Group B</td>
+                  <td class="muted">Gymnastics</td>
+                  <td class="muted">Rotation Based</td>
+                  <td>67</td>
+                  <td>✅ Check-In Open</td>
+                  <td><button class="action-btn">Follow</button></td>
+                </tr>
+                <tr>
+                  <td>Boys 4x100 Relay</td>
+                  <td class="muted">Track &amp; Field</td>
+                  <td class="muted">Heat Based</td>
+                  <td>156</td>
+                  <td>Queued</td>
+                  <td><button class="action-btn">Follow</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="alerts">
+        <div class="panel section-card">
+          <h3>Alert Center</h3>
+          <div class="sub">All user-facing triggers and delivery activity.</div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-top">
+                <strong>CHECK-IN OPEN</strong>
+                <span>Gymnastics · 3:14 PM</span>
+              </div>
+              <p>Floor Rotation Group B opened check-in. Notification delivered to 67 followers.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-top">
+                <strong>ON DECK</strong>
+                <span>Wrestling · 3:10 PM</span>
+              </div>
+              <p>Mat 2 Semifinal is now on deck. Parent audience engagement rose immediately after send.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-top">
+                <strong>🔴 LAST CALL</strong>
+                <span>Track &amp; Field · 3:05 PM</span>
+              </div>
+              <p>Boys 200m Final received high-urgency delivery with crimson visual priority.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-top">
+                <strong>FINAL RESULTS</strong>
+                <span>Swimming · 2:58 PM</span>
+              </div>
+              <p>Girls 100m Butterfly results published and deep-linked to full results view.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="admin">
+        <div class="panel section-card">
+          <h3>Admin Portal</h3>
+          <div class="sub">Meet directors and coaches control live event status here.</div>
+
+          <div class="grid-3" style="margin-bottom:0;">
+            <div class="panel section-card" style="padding:18px;">
+              <h3 style="font-size:1rem;">Quick Trigger</h3>
+              <div class="sub">Issue high-value updates instantly.</div>
+
+              <div class="status-list">
+                <div class="status-item">
+                  <div class="status-left">
+                    <div class="status-badge">✅</div>
+                    <div>
+                      <div class="status-name">Check-In Open</div>
+                      <div class="status-meta">Open athlete staging</div>
+                    </div>
+                  </div>
+                  <button class="action-btn">Send</button>
+                </div>
+
+                <div class="status-item">
+                  <div class="status-left">
+                    <div class="status-badge">📣</div>
+                    <div>
+                      <div class="status-name">On Deck</div>
+                      <div class="status-meta">Alert imminent event</div>
+                    </div>
+                  </div>
+                  <button class="action-btn">Send</button>
+                </div>
+
+                <div class="status-item">
+                  <div class="status-left">
+                    <div class="status-badge">🔴</div>
+                    <div>
+                      <div class="status-name">Last Call</div>
+                      <div class="status-meta">High urgency trigger</div>
+                    </div>
+                  </div>
+                  <button class="action-btn">Send</button>
+                </div>
+
+                <div class="status-item">
+                  <div class="status-left">
+                    <div class="status-badge">🏁</div>
+                    <div>
+                      <div class="status-name">Final Results</div>
+                      <div class="status-meta">Publish outcomes instantly</div>
+                    </div>
+                  </div>
+                  <button class="action-btn">Send</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel section-card" style="padding:18px;">
+              <h3 style="font-size:1rem;">Broadcast Logic</h3>
+              <div class="sub">Segmented delivery engine behavior.</div>
+
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>1. Admin selects status</strong>
+                    <span>Dropdown Action</span>
+                  </div>
+                  <p>Event state changes are triggered from a single low-friction admin control.</p>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>2. Query follower array</strong>
+                    <span>Firestore</span>
+                  </div>
+                  <p>System scans followedEvents and identifies only relevant subscribers.</p>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>3. Broadcast payload</strong>
+                    <span>FCM + Functions</span>
+                  </div>
+                  <p>Notification is pushed instantly to the correct audience segment.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel section-card" style="padding:18px;">
+              <h3 style="font-size:1rem;">Operational Health</h3>
+              <div class="sub">Real-time admin confidence metrics.</div>
+
+              <div class="chart">
+                <div class="bar-row">
+                  <div class="bar-label"><span>Delivery Success</span><span>98%</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Cache Availability</span><span>91%</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:91%"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Admin Response Speed</span><span>88%</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+                </div>
+                <div class="bar-row">
+                  <div class="bar-label"><span>Data Sync Health</span><span>95%</span></div>
+                  <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="billing">
+        <div class="panel section-card">
+          <h3>Billing &amp; Monetization</h3>
+          <div class="sub">Meet-specific access and seasonal subscriptions built right into the app.</div>
+
+          <div class="split-2" style="margin-bottom:0;">
+            <div class="pay-cards">
+              <div class="pay-card">
+                <div class="pay-card-top">
+                  <strong>Meet Day Pass</strong>
+                  <span class="status-pill checkin">Instant</span>
+                </div>
+                <p>Ideal for parents who only need access to one event day with live notifications and results.</p>
+                <div class="price">$4.99</div>
+                <button class="primary-btn" style="width:100%;">Purchase Day Pass</button>
+              </div>
+
+              <div class="pay-card">
+                <div class="pay-card-top">
+                  <strong>Family Season Access</strong>
+                  <span class="status-pill ondeck">Premium</span>
+                </div>
+                <p>Full-season access for all supported sports, all live alerts, premium views, and future AI insights.</p>
+                <div class="price">$29.99</div>
+                <button class="ghost-btn" style="width:100%;">Start Subscription</button>
+              </div>
+            </div>
+
+            <div class="panel section-card" style="padding:18px;">
+              <h3 style="font-size:1rem;">Revenue Layer</h3>
+              <div class="sub">Conversion-friendly payment architecture.</div>
+
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>One-click monetization</strong>
+                    <span>Stripe Flow</span>
+                  </div>
+                  <p>Users can unlock access without leaving the core app experience.</p>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>Meet-specific upsell</strong>
+                    <span>Contextual Timing</span>
+                  </div>
+                  <p>Purchase prompts can appear when users attempt to follow premium event types.</p>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-top">
+                    <strong>Season retention</strong>
+                    <span>LTV Growth</span>
+                  </div>
+                  <p>Subscription model supports repeat parent engagement across multiple competitions.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script>
-    const reveals = document.querySelectorAll('.reveal');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.content-section');
+    const order = ['dashboard', 'events', 'alerts', 'admin', 'billing'];
+    const mobileCycle = document.getElementById('mobileCycle');
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+    function activateTab(tabId){
+      navButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
       });
-    }, { threshold: 0.14 });
 
-    reveals.forEach(el => observer.observe(el));
+      sections.forEach(section => {
+        section.classList.toggle('active', section.id === tabId);
+      });
+    }
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+    });
+
+    if (mobileCycle) {
+      mobileCycle.addEventListener('click', () => {
+        const current = document.querySelector('.content-section.active')?.id || 'dashboard';
+        const currentIndex = order.indexOf(current);
+        const next = order[(currentIndex + 1) % order.length];
+        activateTab(next);
+      });
+    }
   </script>
 </body>
 </html>
